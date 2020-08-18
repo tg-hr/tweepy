@@ -8,6 +8,7 @@ from __future__ import absolute_import
 
 import json
 import logging
+import multiprocessing
 import re
 import requests
 import ssl
@@ -382,7 +383,8 @@ class Stream(object):
     def _start(self, is_async):
         self.running = True
         if is_async:
-            self._thread = Thread(target=self._run)
+            # self._thread = Thread(target=self._run,name='Stream_async')
+            self._thread = multiprocessing.Process(target=self._run, name='Stream_async')
             self._thread.daemon = self.daemon
             self._thread.start()
         else:
